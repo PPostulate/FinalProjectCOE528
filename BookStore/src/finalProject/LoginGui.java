@@ -8,9 +8,11 @@ import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
+import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
+import javafx.geometry.Insets;
+import javafx.scene.text.Text;
 
 /**
  *
@@ -23,21 +25,42 @@ public class LoginGui extends Application {
     public void start(Stage primaryStage) {
         
         GridPane gridpane = new GridPane();
-        Button btn = new Button();
-        btn.setText("Say 'Hello World'");
-        btn.setOnAction(new EventHandler<ActionEvent>() {
+        gridpane.setPadding(new Insets(20));
+        gridpane.setHgap(10);
+        gridpane.setVgap(10);
+        
+        Text welcomeMsg = new Text("Welcome to the BookStore App");
+        Text userPrompt = new Text("Username:");
+        Text pwPrompt = new Text("Pasword:");
+        
+        
+        TextField username = new TextField();
+        TextField password = new TextField();
+        
+        username.setPromptText("Username");
+        password.setPromptText("Password");
+        
+        Button loginBtn = new Button("Login");
+        loginBtn.setOnAction(new EventHandler<ActionEvent>() {
             
             @Override
             public void handle(ActionEvent event) {
-                System.out.println("Hello World!");
+                String userStr = username.getText();
+                String pwStr = password.getText();
+                System.out.printf("User: %s\n Password: %s\n", userStr, pwStr);
             }
         });
         
         
+        gridpane.add(welcomeMsg,0,0);
+        gridpane.add(userPrompt,0,1);
+        gridpane.add(pwPrompt,0,2);
+        gridpane.add(username, 1,1);
+        gridpane.add(password,1,2);
+        gridpane.add(loginBtn, 1, 3);
         
-        Scene scene = new Scene(root, 300, 250);
-        
-        primaryStage.setTitle("Hello World!");
+        Scene scene = new Scene(gridpane, 400, 200);
+        primaryStage.setTitle("Bookstore App");
         primaryStage.setScene(scene);
         primaryStage.show();
     }
