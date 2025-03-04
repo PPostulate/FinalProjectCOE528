@@ -16,6 +16,6 @@ import javafx.stage.Stage;
  * @author myasui
  */
 public abstract class User {
-    public abstract void startScene(Stage stage);
+    public abstract void start(Stage stage);
     public abstract Scene logout(Stage stage);
 }
