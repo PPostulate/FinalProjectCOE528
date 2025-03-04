@@ -468,10 +468,10 @@ public class Database {
         System.out.println("-----------------[TESTING DATA OVERWRITES]----------------");
    
         // Testing overwrites
-        Database.Write(B2,true);
-        System.out.println("Overwriting book data with book 2");
-        Database.Write(C2,true);
-        System.out.println("Overwriting customer data with customer 2"); 
+        Database.Write(B1,true);
+        System.out.println("Overwriting book data with book 1");
+        Database.Write(C1,true);
+        System.out.println("Overwriting customer data with customer 1"); 
         System.out.println(""); 
         
         bookData = Database.Read(FilePath.book);
