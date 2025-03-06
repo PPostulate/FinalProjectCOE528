@@ -58,10 +58,10 @@ public class Database {
     private static BufferedWriter writer;
     private static boolean verified = false;
     private static boolean bookDataModified = false; 
-    private static boolean customerDataModified = false; 
+    private static boolean customerDataModified = false;
     
-    private static final String BOOKDATAPATH = "src/finalProject/Data/books.txt";
-    private static final String CUSTOMERDATAPATH = "src/finalProject/Data/customers.txt";
+    private static String BOOKDATAPATH = "src/finalProject/Data/books.txt";
+    private static String CUSTOMERDATAPATH = "src/finalProject/Data/customers.txt";
   
     private static final ArrayList<Datashard> bookDataCache = new ArrayList<>(); 
     private static final ArrayList<Datashard> customerDataCache = new ArrayList<>(); 
@@ -134,6 +134,54 @@ public class Database {
         
         System.out.println("Database successfully initialized"); 
         
+    }
+    
+    /**
+     * Initializes the database caches and verifies all data files are present
+     * Database is initialized under testMode to avoid the primary database
+     * @param testMode 
+     */
+    public static void Init(boolean testMode){
+        if(!testMode){
+            throw new IllegalArgumentException("Cannot pass argument false in test"); 
+        }
+        
+        BOOKDATAPATH = "src/finalProject/Data/booksTEST.txt";
+        CUSTOMERDATAPATH = "src/finalProject/Data/customerTEST.txt";
+        
+        File bookDataFile = new File(BOOKDATAPATH);
+        File customerDataFile = new File(CUSTOMERDATAPATH);
+        
+        if(!bookDataFile.exists()){
+            try{
+                // Creates a new books.txt file 
+                bookDataFile.createNewFile();
+            }catch(IOException e){
+                System.out.println("Unable to automatically create book.txt data file!"); 
+                return;
+            }
+        }
+        
+        if(!customerDataFile.exists()){
+            try{
+                customerDataFile.createNewFile();
+            }catch(IOException e){
+                System.out.println("Unable to automatically create customer.txt data file!"); 
+                return;
+            }
+        }
+        
+        bookDataFile.deleteOnExit(); 
+        customerDataFile.deleteOnExit(); 
+        
+        verified = true;
+        
+        
+        Database.Read(FilePath.book);
+        Database.Read(FilePath.customer);
+        
+        System.out.println("Database successfully initialized"); 
+    
     }
     
     /**
@@ -358,7 +406,8 @@ public class Database {
 
     
     public static void main(String[] args){
-        Database.Init();
+        Database.Init(true);
+        
         
         BookData B1 = new BookData("The washed",100);
         BookData B2 = new BookData("Max Dynasty the 7th", 3000);
@@ -504,8 +553,6 @@ public class Database {
             System.out.println("\033[0;32mDATA CLEARING PASSED \033[0m");
         
     }
-    
-    
     
     
 }
