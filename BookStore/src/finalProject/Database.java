@@ -56,7 +56,9 @@ public class Database {
     private static FileReader fileReader; 
     private static BufferedReader reader;
     private static BufferedWriter writer;
-    private static boolean verified = false; 
+    private static boolean verified = false;
+    private static boolean bookDataModified = false; 
+    private static boolean customerDataModified = false; 
     
     private static final String BOOKDATAPATH = "src/finalProject/Data/books.txt";
     private static final String CUSTOMERDATAPATH = "src/finalProject/Data/customers.txt";
@@ -64,9 +66,11 @@ public class Database {
     private static final ArrayList<Datashard> bookDataCache = new ArrayList<>(); 
     private static final ArrayList<Datashard> customerDataCache = new ArrayList<>(); 
    
+    
+    
     // Private Methods 
     
-    private static void Write(ArrayList<Datashard> abstractDataList, FilePath path){
+    private static boolean Write(FilePath path){
         try{
             
             fileWriter = new FileWriter((path == FilePath.book) ? BOOKDATAPATH : CUSTOMERDATAPATH);
@@ -74,21 +78,22 @@ public class Database {
             
             if(path == FilePath.book){
                 
-                for(Datashard abstractData : abstractDataList){
+                for(Datashard abstractData : bookDataCache){
                     BookData currentBook = (BookData) abstractData; 
                     writer.write(currentBook.name + "," + currentBook.price + "\n");
                 }
                 writer.close();
             }else{
-                for(Datashard abstractData : abstractDataList){
-                    CustomerData currentBook = (CustomerData) abstractData; 
-                    writer.write(currentBook.name + "," + currentBook.points + "\n");
+                for(Datashard abstractData : customerDataCache){
+                    CustomerData customerData = (CustomerData) abstractData; 
+                    writer.write(customerData.name + "," + customerData.points + "," + customerData.password +"\n");
                 }
                 writer.close();
             }
-            
+            return true; 
         }catch(IOException e){
             System.out.println("Failed to write data array"); 
+            return false; 
         }
         
     }
@@ -191,7 +196,7 @@ public class Database {
     
     /**
      * Writes the data to the current specified path 
-     * This methods appends to the file. DOES NOT OVERWRITE DATA
+     * This method appends data to the current customer data cache. DOES NOT WRITE TO FILES
      * @param path
      * @param data
      * @return 
@@ -200,26 +205,15 @@ public class Database {
         if(!verified){
             throw new RuntimeException("Database has not been initialized. Cannot perform write operation!");
         }
-        
-        try{
-            fileWriter = new FileWriter(CUSTOMERDATAPATH,true); 
-            writer = new BufferedWriter(fileWriter); 
-            
-            // Converts the book data into a string 
-            writer.write(data.name + "," + data.points + "," + data.password + "\n");
-            writer.close();
-            customerDataCache.add(data);
-            return true; 
-        }catch(IOException e){
-            System.out.println("File writer error: " + e); 
-            return false; 
-        }
+        customerDataModified = true; 
+        customerDataCache.add(data);
+        return true; 
     }
     
     /**
      * Writes the data to the current specified path 
-     * This method overwrites all existing data in a file with the current provided data. 
-     * @param path
+     * This method overwrites all data in the customer data cache with the current data provided. DOES NOT WRITE TO FILE. 
+     * @param overwrite
      * @param data
      * @return 
      */
@@ -227,28 +221,16 @@ public class Database {
         if(!verified){
             throw new RuntimeException("Database has not been initialized. Cannot perform write operation!");
         }
-        
-        try{
-            fileWriter = new FileWriter(CUSTOMERDATAPATH); 
-            writer = new BufferedWriter(fileWriter); 
-            
-            // Converts the book data into a string 
-            writer.write(data.name + "," + data.points + "," + data.password + "\n");
-            writer.close();
-            
-            customerDataCache.clear();
-            customerDataCache.add(data);
-            return true; 
-        }catch(IOException e){
-            System.out.println("File writer error: " + e); 
-            return false; 
-        }
+
+        customerDataModified = true;
+        customerDataCache.clear();
+        customerDataCache.add(data);
+        return true; 
     }
     
     /**
      * Writes the data to the current specified path 
-     * This method appends to the file. DOES NOT OVERWRITE DATA
-     * @param path
+     * This method appends data into the book data cache. DOES NOT WRITE TO FILE
      * @param data
      * @return 
      */
@@ -256,25 +238,16 @@ public class Database {
         if(!verified){
             throw new RuntimeException("Database has not been initialized. Cannot perform write operation!");
         }
-        try{
-            fileWriter = new FileWriter(BOOKDATAPATH,true); 
-            writer = new BufferedWriter(fileWriter); 
-            
-            // Converts the book data into a string 
-            writer.write(data.name + "," + data.price+ "\n");
-            writer.close();
-            bookDataCache.add(data);
-            return true; 
-        }catch(IOException e){
-            System.out.println("File writer error: " + e); 
-            return false; 
-        }
+ 
+        bookDataModified = true; 
+        bookDataCache.add(data);
+        return true; 
     }
     
     /**
      * Writes the data to the current specified path 
-     * This method overwrites all existing data in a file with the current provided data. 
-     * @param path
+     * This method overwrites all data in the book data cache with the current data provided. DOES NOT WRITE TO FILE. 
+     * @param overwrite
      * @param data
      * @return 
      */
@@ -282,22 +255,11 @@ public class Database {
         if(!verified){
             throw new RuntimeException("Database has not been initialized. Cannot perform write operation!");
         }
-        try{
-            fileWriter = new FileWriter(BOOKDATAPATH); 
-            writer = new BufferedWriter(fileWriter); 
-            
-            // Converts the book data into a string 
-            writer.write(data.name + "," + data.price+ "\n");
-            writer.close();
-            
-            bookDataCache.clear();
-            bookDataCache.add(data);
 
-            return true; 
-        }catch(IOException e){
-            System.out.println("File writer error: " + e); 
-            return false; 
-        }
+        bookDataModified = true; 
+        bookDataCache.clear();
+        bookDataCache.add(data);
+        return true; 
     }
     
     /**
@@ -314,8 +276,8 @@ public class Database {
         for(int i = 0; i < bookDataCache.size(); i++){
             BookData currentBook = (BookData) bookDataCache.get(i);
             if(currentBook.name.equals(data.name)){
+                bookDataModified = true; 
                 bookDataCache.remove(i);
-                Database.Write(bookDataCache,FilePath.book);
                 return true;
             }
         }
@@ -339,8 +301,8 @@ public class Database {
         for(int i = 0; i < customerDataCache.size(); i++){
             CustomerData currentCustomer = (CustomerData) customerDataCache.get(i);
             if(currentCustomer.name.equals(data.name) && currentCustomer.password.equals(currentCustomer.password)){
+                customerDataModified = true; 
                 customerDataCache.remove(i);
-                Database.Write(customerDataCache,FilePath.customer);
                 return true;
             }
         }
@@ -359,30 +321,40 @@ public class Database {
         if(!verified){
             throw new RuntimeException("Database has not been initialized. Cannot perform clear operation!");
         }
+        
         if(path == FilePath.book){
-            try{
-                fileWriter = new FileWriter(BOOKDATAPATH); 
-                writer = new BufferedWriter(fileWriter); 
-                writer.write("");
-                bookDataCache.clear();
-            }catch(IOException e){
-                System.out.println("Error clearing file: " + e);
-                return false; 
-            }
+            bookDataModified = true; 
+            bookDataCache.clear();
         }else{
-            try{
-                fileWriter = new FileWriter(CUSTOMERDATAPATH); 
-                writer = new BufferedWriter(fileWriter); 
-                writer.write("");
-                customerDataCache.clear();
-            }catch(IOException e){
-                System.out.println("Error clearing file: " + e);
-                return false; 
-            }
+            customerDataModified = true;
+            customerDataCache.clear();
         }
         return true;
     }
     
+    
+    /**
+     * Flushes all changes made to the data caches into the file and saves it 
+     * @param path
+     * @return 
+     */
+    public static boolean Flush(){
+        boolean writeStatusC = true, writeStatusB = true;
+        
+        // Checks which file has been modified 
+        if(customerDataModified){
+            writeStatusC = Database.Write(FilePath.customer);
+            customerDataModified = false; 
+        }
+        
+        if(bookDataModified){
+            writeStatusB = Database.Write(FilePath.book); 
+            bookDataModified = false; 
+        }
+        
+        // No Changes made 
+        return writeStatusC && writeStatusB; 
+    }
 
     
     public static void main(String[] args){
@@ -402,7 +374,12 @@ public class Database {
         System.out.println("FInished writing customer 1"); 
         Database.Write(C2);
         System.out.println("Finished writing customer 2"); 
+        
+
+        Database.Flush();
+        System.out.println("Flushing the database to the file"); 
         System.out.println(""); 
+        
         
         ArrayList<Datashard> bookData = Database.Read(FilePath.book);
         ArrayList<Datashard> customerData = Database.Read(FilePath.customer);
@@ -428,6 +405,9 @@ public class Database {
         System.out.println("Removing book 1 from data list"); 
         Database.Remove(C1); 
         System.out.println("Removing customer 1 from data list"); 
+        
+        System.out.println("Flushing data onto file"); 
+        Database.Flush(); 
         
         bookData = Database.Read(FilePath.book);
         customerData = Database.Read(FilePath.customer);
@@ -472,6 +452,9 @@ public class Database {
         System.out.println("Overwriting book data with book 1");
         Database.Write(C1,true);
         System.out.println("Overwriting customer data with customer 1"); 
+        
+        Database.Flush(); 
+        System.out.println("Flushes all data into the file"); 
         System.out.println(""); 
         
         bookData = Database.Read(FilePath.book);
@@ -498,6 +481,9 @@ public class Database {
         System.out.println("Removing all book data"); 
         Database.Clear(FilePath.customer);
         System.out.println("Removing all customer data"); 
+        
+        Database.Flush(); 
+        System.out.println("Flushes all data into the file"); 
         System.out.println("");
         
         bookData = Database.Read(FilePath.book);
