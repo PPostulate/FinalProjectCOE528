@@ -4,6 +4,7 @@
  */
 package finalProject;
 
+import finalProject.OwnerSubGUIs.OwnerBookGUI;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -44,6 +45,16 @@ public class OwnerStartGUI extends GUIMode{
         bookButton.setPrefWidth(buttonWidth);
         customerButton.setPrefWidth(buttonWidth);
         logoutButton.setPrefWidth(buttonWidth);
+        
+        bookButton.setOnAction(new EventHandler<ActionEvent>(){
+            @Override
+            public void handle(ActionEvent event) {
+               d.setGUIMode(new OwnerBookGUI());
+               d.startGUI(stage);
+
+            }
+            
+        });
         
         
         buttonBox.getChildren().addAll(bookButton,customerButton,logoutButton); 

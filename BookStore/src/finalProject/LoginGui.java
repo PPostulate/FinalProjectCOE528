@@ -22,6 +22,7 @@ public class LoginGui extends GUIMode {
 
     @Override
     public void start(Stage stage, Driver d) {
+        
         GridPane loginGridPane = new GridPane();
         loginGridPane.setPadding(new Insets(20));
         loginGridPane.setHgap(10);
@@ -42,6 +43,11 @@ public class LoginGui extends GUIMode {
 
             @Override
             public void handle(ActionEvent event) {
+                
+                d.setGUIMode(new OwnerStartGUI());
+                d.startGUI(stage);
+                
+                
                 String userStr = username.getText();
                 String pwStr = password.getText();
                 if (userStr.equals("admin") && pwStr.equals("admin")){
