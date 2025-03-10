@@ -19,8 +19,6 @@ public class Driver extends Application {
     @Override
     public void start(Stage primaryStage) {
         currentGUI.start(primaryStage, this);
-        
-        
     }
     
     public void startGUI(Stage s){
@@ -35,6 +33,7 @@ public class Driver extends Application {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
+        Database.Init();
         launch(args);
     }
     
