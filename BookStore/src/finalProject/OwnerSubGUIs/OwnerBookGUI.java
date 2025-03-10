@@ -1,6 +1,7 @@
 package finalProject.OwnerSubGUIs;
 import finalProject.GUIMode;
 import finalProject.Driver; 
+import javafx.collections.ObservableList;
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -9,6 +10,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.collections.FXCollections;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.layout.GridPane;
@@ -48,6 +50,8 @@ public class OwnerBookGUI extends GUIMode {
         // Set the table size properties
         table.prefWidthProperty().bind(ownerBookPane.widthProperty().subtract(40)); // Adjust width to fit in GridPane
         table.prefHeightProperty().bind(ownerBookPane.heightProperty().subtract(40)); // Adjust height
+        
+        ObservableList<BookData> data = FXCollections.observableArrayList();
         
         // Add VBox to GridPane
         ownerBookPane.add(table, 0, 0);
