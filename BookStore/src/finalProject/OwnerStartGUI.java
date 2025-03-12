@@ -3,7 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package finalProject;
-
+import finalProject.LoginGui;
 import finalProject.OwnerSubGUIs.OwnerBookGUI;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -55,6 +55,17 @@ public class OwnerStartGUI extends GUIMode{
             }
             
         });
+        
+        logoutButton.setOnAction(new EventHandler<ActionEvent>(){
+        
+            @Override
+            public void handle(ActionEvent event){
+                d.setGUIMode(new LoginGui());
+                d.startGUI(stage);
+            }
+        
+        });
+        
         
         
         buttonBox.getChildren().addAll(bookButton,customerButton,logoutButton); 

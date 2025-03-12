@@ -12,40 +12,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
-enum FilePath{
-    book, 
-    customer
-}
-
-final class BookData extends Datashard{
-    public double price; 
-    
-    public BookData(String name, double price){
-        super(name); 
-        this.price = price; 
-    }
-}
-
-final class CustomerData extends Datashard{
-    public double points;
-    public String password; 
-    
-    public CustomerData(String name, double points, String password){
-        super(name);
-        this.points = points; 
-        this.password = password; 
-    }
-}
-
-sealed abstract class Datashard permits BookData, CustomerData{
-    public String name;
-    
-    public Datashard(String name){
-        this.name = name; 
-    }
-}
- 
-
 /**
  * Database manages read/writes from the data directory
  * @author szyang
