@@ -45,6 +45,8 @@ public class LoginGui extends GUIMode {
             public void handle(ActionEvent event) {
                 
                 d.setGUIMode(new OwnerStartGUI());
+                
+                //Remove this after testing
                 d.startGUI(stage);
                 
                 

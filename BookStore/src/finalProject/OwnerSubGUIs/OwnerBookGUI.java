@@ -51,6 +51,7 @@ public class OwnerBookGUI extends GUIMode {
         table.prefWidthProperty().bind(ownerBookPane.widthProperty().subtract(40)); // Adjust width to fit in GridPane
         table.prefHeightProperty().bind(ownerBookPane.heightProperty().subtract(40)); // Adjust height
         
+        //ObservableList<BookData> data = FXCollections.observableArrayList();
 //        ObservableList<BookData> data = FXCollections.observableArrayList();
         
         // Add VBox to GridPane
