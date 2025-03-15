@@ -369,6 +369,18 @@ public class Database {
         // No Changes made 
         return writeStatusC && writeStatusB; 
     }
+    
+    public static boolean compareBook (String b){
+        for (Datashard a : bookDataCache){
+            BookData c = (BookData) a;
+            if((c.name.equals(b))){
+                return false;
+            }
+        }
+        
+            
+        return true;
+    }
 
     
     public static void main(String[] args){
