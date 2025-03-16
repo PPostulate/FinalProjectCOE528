@@ -44,14 +44,24 @@ public class LoginGui extends GUIMode {
             @Override
             public void handle(ActionEvent event) {
                 
-                d.setGUIMode(new OwnerStartGUI());
-                
                 //Remove this after testing
-                d.startGUI(stage);
+//                d.setGUIMode(new OwnerStartGUI());
+//                d.startGUI(stage);
                 
                 
                 String userStr = username.getText();
                 String pwStr = password.getText();
+                for (Datashard data : Database.Read(FilePath.customer)){
+                    CustomerData cData = (CustomerData) data;
+                    System.out.println(userStr + " " + cData.name);
+                    System.out.println(pwStr + " " + cData.password);
+                    if (cData.name.equals(userStr) && cData.password.equals(pwStr)){
+                        System.out.println("working");
+                        d.setGUIMode(new CustomerStartGUI(cData));
+                        d.startGUI(stage);
+                    }
+                }
+
                 if (userStr.equals("admin") && pwStr.equals("admin")){
                     d.setGUIMode(new OwnerStartGUI());
                     d.startGUI(stage);

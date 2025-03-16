@@ -10,6 +10,7 @@ package finalProject;
  */
 public final class BookData extends Datashard{
     public double price; 
+    public boolean selected = false;
     
     public BookData(String name, double price){
         super(name); 

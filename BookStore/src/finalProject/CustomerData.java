@@ -17,5 +17,9 @@ public final class CustomerData extends Datashard{
         this.points = points; 
         this.password = password; 
     }
+    
+    public char getStatus(){
+        return (points < 1000)? ('S'):('G');
+    }
 }
 
