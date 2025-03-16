@@ -184,8 +184,11 @@ public class Database {
                 // Splits the string 
                 String[] formattedData = currentLine.split(","); 
                 String name = formattedData[0]; 
+                String password = "";
                 Double value = Double.parseDouble(formattedData[1]); 
-                String password = formattedData[2];
+                if (formattedData.length > 2){
+                    password = formattedData[2];
+                }
                 
                 // Converts the data into a specified object 
                 Datashard newDataShardObject = (path == FilePath.book) ? new BookData(name,value) : new CustomerData(name, value,password); 
@@ -377,8 +380,16 @@ public class Database {
                 return false;
             }
         }
-        
-            
+        return true;
+    }
+    
+    public static boolean compareCustomer (String b){
+        for (Datashard a : customerDataCache){
+            CustomerData c = (CustomerData) a;
+            if(c.name.equals(b)){
+                return false;
+            }
+        }
         return true;
     }
 

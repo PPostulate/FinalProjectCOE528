@@ -5,6 +5,9 @@
 package finalProject;
 import finalProject.LoginGui;
 import finalProject.OwnerSubGUIs.OwnerBookGUI;
+import finalProject.OwnerSubGUIs.OwnerCustomerGUI;
+import java.util.HashSet;
+import java.util.Set;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -55,6 +58,17 @@ public class OwnerStartGUI extends GUIMode{
             }
             
         });
+        
+        customerButton.setOnAction(event -> {
+            d.setGUIMode(new OwnerCustomerGUI());
+            d.startGUI(stage);
+            
+            
+        }
+            
+            
+        
+        );
         
         logoutButton.setOnAction(new EventHandler<ActionEvent>(){
         

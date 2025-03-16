@@ -9,6 +9,7 @@ import javafx.stage.Stage;
 
 
 
+
 /**
  *
  * @author myasui
@@ -19,6 +20,9 @@ public class Driver extends Application {
     @Override
     public void start(Stage primaryStage) {
         currentGUI.start(primaryStage, this);
+        primaryStage.setOnCloseRequest(event -> {
+            Database.Flush();
+        });
     }
     
     public void startGUI(Stage s){

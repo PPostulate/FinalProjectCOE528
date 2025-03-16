@@ -65,6 +65,10 @@ public class OwnerBookGUI extends GUIMode {
         
         //Make observable list
         ObservableList<BookData> books = FXCollections.observableArrayList();
+        for (Datashard data : Database.Read(FilePath.book)){
+            books.add((BookData)data);
+        }
+        
         table.setItems(books);
         
         
@@ -81,7 +85,7 @@ public class OwnerBookGUI extends GUIMode {
         addButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                // Goes back to the previous screen 
+               
                 String bookName = nameField.getText();
                 try {
                     double bookPrice = Double.parseDouble(priceField.getText());
@@ -123,7 +127,6 @@ public class OwnerBookGUI extends GUIMode {
             } else{
                 errLabel.setText("No row highlighted.");
             }
-            
         });
         
 
