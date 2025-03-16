@@ -94,10 +94,16 @@ public class Database {
         
         verified = true;
         
-        
-        Database.Read(FilePath.book);
-        Database.Read(FilePath.customer);
-        
+        try{
+            Database.Read(FilePath.book);
+            Database.Read(FilePath.customer);
+        }catch(Exception e){
+            verified = false; 
+            System.out.println("Database failed to read from data files"); 
+            System.out.println("Error: " + e); 
+            return; 
+        }
+            
         System.out.println("Database successfully initialized"); 
         
     }
