@@ -3,7 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package finalProject;
-import finalProject.LoginGui;
+import finalProject.LoginGUI;
 import finalProject.OwnerSubGUIs.OwnerBookGUI;
 import finalProject.OwnerSubGUIs.OwnerCustomerGUI;
 import java.util.HashSet;
@@ -74,7 +74,7 @@ public class OwnerStartGUI extends GUIMode{
         
             @Override
             public void handle(ActionEvent event){
-                d.setGUIMode(new LoginGui());
+                d.setGUIMode(new LoginGUI());
                 d.startGUI(stage);
             }
         

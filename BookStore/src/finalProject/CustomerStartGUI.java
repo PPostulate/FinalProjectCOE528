@@ -4,6 +4,7 @@
  */
 package finalProject;
 
+import java.util.ArrayList;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
@@ -15,6 +16,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.control.cell.CheckBoxTableCell;
+import javafx.scene.control.Button;
 
 /**
  *
@@ -80,10 +82,45 @@ public class CustomerStartGUI extends GUIMode{
         table.prefWidthProperty().bind(customerPane.widthProperty().subtract(40)); // Adjust width to fit in GridPane
         table.prefHeightProperty().bind(customerPane.heightProperty().subtract(40)); // Adjust height
         
+        // Add logout button
+        Button logout = new Button("Logout");
+        logout.setOnAction(event -> {
+            d.setGUIMode(new LoginGUI());
+            d.start(stage);
+        });
+
+        Button buyButton = new Button("Buy");
+        buyButton.setOnAction(event -> {
+            ArrayList<BookData> bookCart = new ArrayList();
+            for (BookData b : books){
+                if (b.selected){
+                    bookCart.add(b);
+                }
+            }
+            d.setGUIMode(new CustomerCheckoutGUI(bookCart, c, false));
+            d.start(stage);
+        });
         
+        Button redeemPointsButton = new Button("Redeem points and Buy");
+        buyButton.setOnAction(event -> {
+            ArrayList<BookData> bookCart = new ArrayList();
+            for (BookData b : books){
+                if (b.selected){
+                    bookCart.add(b);
+                    
+                }
+            }
+            d.setGUIMode(new CustomerCheckoutGUI(bookCart, c, true));
+            d.start(stage);
+        });
+
+
         // Add items to GridPane
         customerPane.add(welcomeLabel, 0, 0);
         customerPane.add(table, 0, 1);
+        customerPane.add(buyButton, 0, 3);
+        customerPane.add(redeemPointsButton, 0, 4);
+        customerPane.add(logout, 0, 5);
         
         // Remove padding from table itself
         table.setStyle("-fx-padding: 0; -fx-focus-color: transparent; -fx-faint-focus-color: transparent; -fx-border-color: transparent;");

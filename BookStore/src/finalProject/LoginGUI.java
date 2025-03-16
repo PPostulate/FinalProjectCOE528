@@ -18,7 +18,7 @@ import javafx.stage.Stage;
  *
  * @author myasui
  */
-public class LoginGui extends GUIMode {
+public class LoginGUI extends GUIMode {
 
     @Override
     public void start(Stage stage, Driver d) {
@@ -53,10 +53,7 @@ public class LoginGui extends GUIMode {
                 String pwStr = password.getText();
                 for (Datashard data : Database.Read(FilePath.customer)){
                     CustomerData cData = (CustomerData) data;
-                    System.out.println(userStr + " " + cData.name);
-                    System.out.println(pwStr + " " + cData.password);
                     if (cData.name.equals(userStr) && cData.password.equals(pwStr)){
-                        System.out.println("working");
                         d.setGUIMode(new CustomerStartGUI(cData));
                         d.startGUI(stage);
                     }

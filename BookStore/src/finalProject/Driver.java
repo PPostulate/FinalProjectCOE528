@@ -15,7 +15,7 @@ import javafx.stage.Stage;
  * @author myasui
  */
 public class Driver extends Application {
-    private GUIMode currentGUI = new LoginGui();
+    private GUIMode currentGUI = new LoginGUI();
     
     @Override
     public void start(Stage primaryStage) {
