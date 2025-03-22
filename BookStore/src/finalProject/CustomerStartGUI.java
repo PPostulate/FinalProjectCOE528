@@ -17,6 +17,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.control.cell.CheckBoxTableCell;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 
 /**
  *
@@ -73,6 +74,23 @@ public class CustomerStartGUI extends GUIMode{
         for (Datashard data : Database.Read(FilePath.book)){
             books.add((BookData)data);
         }
+        
+        //Add ability 
+        selected.setCellFactory(column -> new CheckBoxTableCell<BookData, Boolean>() {
+            @Override
+            public void updateItem(Boolean item, boolean empty){
+                super.updateItem(item, empty);
+                if(!empty){
+                    CheckBox checkBox = new CheckBox();
+                    checkBox.setSelected(item != null && item);
+                    setGraphic(checkBox);
+                    checkBox.setOnAction(event -> {
+                        BookData book = getTableView().getItems().get(getIndex());
+                        book.selected = checkBox.isSelected();
+                    });
+                }
+            }
+        });
         
         //Add columns to table
         table.getColumns().addAll(bookName, bookPrice, selected);

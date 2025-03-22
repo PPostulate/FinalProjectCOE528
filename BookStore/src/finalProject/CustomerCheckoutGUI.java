@@ -6,6 +6,8 @@ package finalProject;
 
 import javafx.stage.Stage;
 import java.util.ArrayList;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -31,6 +33,10 @@ public class CustomerCheckoutGUI extends GUIMode{
         double transactionCost = 0;
         
         GridPane checkoutPane = new GridPane();
+        checkoutPane.setPadding(new Insets(20));
+        checkoutPane.setAlignment(Pos.CENTER);
+        checkoutPane.setHgap(10);  // Horizontal gap
+        checkoutPane.setVgap(10);  // Vertical gap
         Label transactionCostLabel = new Label();
         Label customerStats = new Label();
         
@@ -42,7 +48,7 @@ public class CustomerCheckoutGUI extends GUIMode{
         if (payWithPoints){
             if (transactionCost - cData.points/100 >= 0){
                 transactionCost -= cData.points/100;
-                cData.points = transactionCost*100;
+                cData.points = transactionCost*10;
             } else{
                 cData.points -= transactionCost*100;
                 transactionCost = 0;
@@ -50,7 +56,7 @@ public class CustomerCheckoutGUI extends GUIMode{
         }
         
         transactionCostLabel.setText("Total Cost: " + transactionCost);
-        customerStats.setText("Points: " + cData.points + "Status: " + cData.getStatus());
+        customerStats.setText("Points: " + cData.points + " Status: " + cData.getStatus());
         
         
         
