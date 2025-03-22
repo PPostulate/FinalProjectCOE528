@@ -286,6 +286,59 @@ public class Database {
     }
     
     /**
+     * Updates the current specified book data with the new book data
+     * @param selectedElement
+     * @param newDataElement
+     * @return true if modified, otherwise false
+     */
+    public static boolean Update(BookData selection, BookData newData){
+        if(!verified){
+            throw new RuntimeException("Database has not been initialized. Cannot perform write operation!");
+        }
+        
+        for(Datashard data : bookDataCache){
+            BookData bookData = (BookData) data; 
+            
+            if(bookData.name.equals(selection.name)){
+                bookDataModified = true; 
+                // Modifies the current data selection with the current data 
+                data = (Datashard) newData; 
+                return true; 
+            }
+        }
+        return false; 
+    }
+    
+    
+    /**
+     * Updates the current customer data with the new customer data 
+     * @param selectedElement
+     * @param newDataElement
+     * @return true if modified, otherwise false
+     */
+    public static boolean Update(CustomerData selection, CustomerData newData){
+        if(!verified){
+            throw new RuntimeException("Database has not been initialized. Cannot perform write operation!");
+        }
+        
+        for(Datashard data : customerDataCache){
+            CustomerData customerData = (CustomerData) data; 
+            
+            if(customerData.name.equals(selection.name)){
+                // Modifies the current data selection with the current data 
+                customerDataModified = true; 
+                
+                data = (Datashard) newData; 
+                
+                return true; 
+            }
+        }
+        
+        return false; 
+    }
+    
+    
+    /**
      * Removes a specific book from the data. Only removes the first book found matching the passed in data
      * @param data
      * @return True if the book was deleted, otherwise false if no book of that name was found 
@@ -361,22 +414,10 @@ public class Database {
      * @param path
      * @return 
      */
-    public static boolean Flush(){
-        boolean writeStatusC = true, writeStatusB = true;
-        
-        // Checks which file has been modified 
-        if(customerDataModified){
-            writeStatusC = Database.Write(FilePath.customer);
-            customerDataModified = false; 
-        }
-        
-        if(bookDataModified){
-            writeStatusB = Database.Write(FilePath.book); 
-            bookDataModified = false; 
-        }
-        
-        // No Changes made 
-        return writeStatusC && writeStatusB; 
+    public static void Flush(){
+        Database.Write(FilePath.customer);
+        Database.Write(FilePath.book); 
+
     }
     
     public static boolean compareBook (String b){
