@@ -169,10 +169,13 @@ public class Database {
         }
         
         // Checks if the book data has already been cached 
-        if(path == FilePath.book && bookDataCache.size() > 0)
+        if(path == FilePath.book && bookDataCache.size() > 0){
             return bookDataCache;
-        else if(customerDataCache.size() > 0)
+        }
+        else if(path == FilePath.customer && customerDataCache.size() > 0){
             return customerDataCache;
+        }
+           
             
         ArrayList<Datashard> cache = new ArrayList<Datashard>();
         String currentLine;

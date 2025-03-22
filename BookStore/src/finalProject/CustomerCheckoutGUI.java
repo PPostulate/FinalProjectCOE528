@@ -57,7 +57,7 @@ public class CustomerCheckoutGUI extends GUIMode{
         
         transactionCostLabel.setText("Total Cost: " + transactionCost);
         customerStats.setText("Points: " + cData.points + " Status: " + cData.getStatus());
-        
+      
         
         
         // Add logout button
