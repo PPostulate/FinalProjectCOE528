@@ -89,14 +89,20 @@ public class OwnerBookGUI extends GUIMode {
                 String bookName = nameField.getText();
                 try {
                     double bookPrice = Double.parseDouble(priceField.getText());
-                    if (Database.compareBook(bookName)){
+                    if (Database.compareBook(bookName) && bookName.trim().length() > 0 && bookPrice > 0){
                         BookData b = new BookData(bookName, bookPrice);
                         books.add(b);
                         Database.Write(b);
                         errLabel.setText("");
                         
                     }else {
-                        errLabel.setText("Invalid, Book already in list");
+                        if (bookName.trim().length() == 0){
+                            errLabel.setText("Invalid, Book name must not be blank");
+                        }else if (bookPrice <= 0){
+                            errLabel.setText("Invalid, price cannot be zero or negative");
+                        }else{
+                        errLabel.setText("Invalid, book already in list");
+                        }
                     }
                 } catch(NumberFormatException e){
                     errLabel.setText("Invalid, please enter an integer");

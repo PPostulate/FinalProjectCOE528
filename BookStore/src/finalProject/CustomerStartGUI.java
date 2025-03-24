@@ -46,6 +46,9 @@ public class CustomerStartGUI extends GUIMode{
         TableView <BookData> table = new TableView<>(); 
         table.setEditable(true);
         
+        //Add an error label
+        Label errLabel = new Label();
+        
         // Create columns
         TableColumn<BookData, String> bookName = new TableColumn<>("Book Name");
         bookName.setCellValueFactory(cellData -> 
@@ -75,7 +78,7 @@ public class CustomerStartGUI extends GUIMode{
             books.add((BookData)data);
         }
         
-        //Add ability 
+        //Add ability for checkboxes to update if a bookData object is selected
         selected.setCellFactory(column -> new CheckBoxTableCell<BookData, Boolean>() {
             @Override
             public void updateItem(Boolean item, boolean empty){
@@ -106,7 +109,8 @@ public class CustomerStartGUI extends GUIMode{
             d.setGUIMode(new LoginGUI());
             d.start(stage);
         });
-
+        
+        //Add buy button
         Button buyButton = new Button("Buy");
         buyButton.setOnAction(event -> {
             ArrayList<BookData> bookCart = new ArrayList();
@@ -115,12 +119,18 @@ public class CustomerStartGUI extends GUIMode{
                     bookCart.add(b);
                 }
             }
-            d.setGUIMode(new CustomerCheckoutGUI(bookCart, c, false));
-            d.start(stage);
+            if (!bookCart.isEmpty()){
+                d.setGUIMode(new CustomerCheckoutGUI(bookCart, c, false));
+                d.start(stage);
+            }else {
+                errLabel.setText("You have no books selected");
+            }
+            
         });
         
+        //Add buy with points button
         Button redeemPointsButton = new Button("Redeem points and Buy");
-        buyButton.setOnAction(event -> {
+        redeemPointsButton.setOnAction(event -> {
             ArrayList<BookData> bookCart = new ArrayList();
             for (BookData b : books){
                 if (b.selected){
@@ -128,14 +138,20 @@ public class CustomerStartGUI extends GUIMode{
                     
                 }
             }
-            d.setGUIMode(new CustomerCheckoutGUI(bookCart, c, true));
-            d.start(stage);
+            if (!bookCart.isEmpty()){
+                d.setGUIMode(new CustomerCheckoutGUI(bookCart, c, true));
+                d.start(stage);
+            }else {
+                errLabel.setText("You have no books selected");
+            }
+                
         });
 
 
         // Add items to GridPane
         customerPane.add(welcomeLabel, 0, 0);
         customerPane.add(table, 0, 1);
+        customerPane.add(errLabel, 0, 2);
         customerPane.add(buyButton, 0, 3);
         customerPane.add(redeemPointsButton, 0, 4);
         customerPane.add(logout, 0, 5);

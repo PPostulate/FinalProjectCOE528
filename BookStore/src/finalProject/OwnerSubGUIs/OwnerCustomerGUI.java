@@ -92,17 +92,24 @@ public class OwnerCustomerGUI extends GUIMode {
     passField.setPromptText("Password");
     Label errLabel = new Label();
     
+    //Button for adding a customer
     Button addButton = new Button("Add"); 
     addButton.setOnAction(event -> {
         String user = userField.getText();
         String pass = passField.getText();
-        if (Database.compareCustomer(user)){
+        if (Database.compareCustomer(user) && user.trim().length() > 0 && pass.trim().length() > 0){
             CustomerData c = new CustomerData(user, 0, pass);
             customers.add(c);
-            Database.Write(c);
+            Database.Write(c);  
             errLabel.setText("");
         }else {
+            if (user.trim().length() == 0){
+                errLabel.setText("Invalid, customer username cannot be blank");
+            }else if (pass.trim().length() == 0){
+                errLabel.setText("Invalid, customer password cannot be blank");
+            }else{
             errLabel.setText("Invalid, Customer username already exists");
+            }
         }
         
     });
