@@ -129,19 +129,19 @@ public class OwnerBookGUI extends GUIMode {
             }
         });
         
-
+        
+        // Add an HBox to the gridplane 
+        HBox hbox = new HBox(); 
+        hbox.setSpacing(5); 
+        hbox.getChildren().addAll(backButton,addButton,deleteButton); 
         
         // Add VBox to GridPane
         ownerBookPane.add(table, 0, 0);
         ownerBookPane.add(nameField, 0, 1);
-        ownerBookPane.add(priceField, 0, 2);
-        ownerBookPane.add(addButton, 0, 3);
+        ownerBookPane.add(priceField, 0, 2);     
+        ownerBookPane.add(hbox, 0, 3);
         ownerBookPane.add(errLabel, 0, 4);
-        ownerBookPane.add(deleteButton, 0, 5);
-        ownerBookPane.add(backButton,0,6);
-        
-
-        
+   
         
         // Remove padding from table itself
         table.setStyle("-fx-padding: 0; -fx-focus-color: transparent; -fx-faint-focus-color: transparent; -fx-border-color: transparent;");
