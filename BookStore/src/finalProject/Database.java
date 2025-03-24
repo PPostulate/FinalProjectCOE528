@@ -23,8 +23,6 @@ public class Database {
     private static BufferedReader reader;
     private static BufferedWriter writer;
     private static boolean verified = false;
-    private static boolean bookDataModified = false; 
-    private static boolean customerDataModified = false;
     
     private static String BOOKDATAPATH = "src/finalProject/Data/books.txt";
     private static String CUSTOMERDATAPATH = "src/finalProject/Data/customers.txt";
@@ -32,7 +30,6 @@ public class Database {
     private static final ArrayList<Datashard> bookDataCache = new ArrayList<>(); 
     private static final ArrayList<Datashard> customerDataCache = new ArrayList<>(); 
    
-    
     
     // Private Methods 
     
@@ -231,7 +228,6 @@ public class Database {
         if(!verified){
             throw new RuntimeException("Database has not been initialized. Cannot perform write operation!");
         }
-        customerDataModified = true; 
         customerDataCache.add(data);
         return true; 
     }
@@ -248,7 +244,6 @@ public class Database {
             throw new RuntimeException("Database has not been initialized. Cannot perform write operation!");
         }
 
-        customerDataModified = true;
         customerDataCache.clear();
         customerDataCache.add(data);
         return true; 
@@ -265,7 +260,6 @@ public class Database {
             throw new RuntimeException("Database has not been initialized. Cannot perform write operation!");
         }
  
-        bookDataModified = true; 
         bookDataCache.add(data);
         return true; 
     }
@@ -281,66 +275,11 @@ public class Database {
         if(!verified){
             throw new RuntimeException("Database has not been initialized. Cannot perform write operation!");
         }
-
-        bookDataModified = true; 
         bookDataCache.clear();
         bookDataCache.add(data);
         return true; 
     }
-    
-    /**
-     * Updates the current specified book data with the new book data
-     * @param selectedElement
-     * @param newDataElement
-     * @return true if modified, otherwise false
-     */
-    public static boolean Update(BookData selection, BookData newData){
-        if(!verified){
-            throw new RuntimeException("Database has not been initialized. Cannot perform write operation!");
-        }
-        
-        for(Datashard data : bookDataCache){
-            BookData bookData = (BookData) data; 
-            
-            if(bookData.name.equals(selection.name)){
-                bookDataModified = true; 
-                // Modifies the current data selection with the current data 
-                data = (Datashard) newData; 
-                return true; 
-            }
-        }
-        return false; 
-    }
-    
-    
-    /**
-     * Updates the current customer data with the new customer data 
-     * @param selectedElement
-     * @param newDataElement
-     * @return true if modified, otherwise false
-     */
-    public static boolean Update(CustomerData selection, CustomerData newData){
-        if(!verified){
-            throw new RuntimeException("Database has not been initialized. Cannot perform write operation!");
-        }
-        
-        for(Datashard data : customerDataCache){
-            CustomerData customerData = (CustomerData) data; 
-            
-            if(customerData.name.equals(selection.name)){
-                // Modifies the current data selection with the current data 
-                customerDataModified = true; 
-                
-                data = (Datashard) newData; 
-                
-                return true; 
-            }
-        }
-        
-        return false; 
-    }
-    
-    
+
     /**
      * Removes a specific book from the data. Only removes the first book found matching the passed in data
      * @param data
@@ -355,7 +294,6 @@ public class Database {
         for(int i = 0; i < bookDataCache.size(); i++){
             BookData currentBook = (BookData) bookDataCache.get(i);
             if(currentBook.name.equals(data.name)){
-                bookDataModified = true; 
                 bookDataCache.remove(i);
                 return true;
             }
@@ -380,7 +318,6 @@ public class Database {
         for(int i = 0; i < customerDataCache.size(); i++){
             CustomerData currentCustomer = (CustomerData) customerDataCache.get(i);
             if(currentCustomer.name.equals(data.name) && currentCustomer.password.equals(currentCustomer.password)){
-                customerDataModified = true; 
                 customerDataCache.remove(i);
                 return true;
             }
@@ -401,11 +338,9 @@ public class Database {
             throw new RuntimeException("Database has not been initialized. Cannot perform clear operation!");
         }
         
-        if(path == FilePath.book){
-            bookDataModified = true; 
+        if(path == FilePath.book){ 
             bookDataCache.clear();
         }else{
-            customerDataModified = true;
             customerDataCache.clear();
         }
         return true;
@@ -443,155 +378,4 @@ public class Database {
         return true;
     }
 
-    
-    public static void main(String[] args){
-        Database.Init(true);
-        
-        
-        BookData B1 = new BookData("The washed",100);
-        BookData B2 = new BookData("Max Dynasty the 7th", 3000);
-        CustomerData C1 = new CustomerData("JQ",10000,"12345");
-        CustomerData C2 = new CustomerData("Jeff Bezos", 3000000,"Amazon Is Prime");
-        
-        System.out.println("---------------[TESTING DATA WRITE AND READ]--------------");
-        Database.Write(B1);
-        System.out.println("Finish writing book 1");
-        Database.Write(B2);
-        System.out.println("Finished writing book 2"); 
-        Database.Write(C1);
-        System.out.println("FInished writing customer 1"); 
-        Database.Write(C2);
-        System.out.println("Finished writing customer 2"); 
-        
-
-        Database.Flush();
-        System.out.println("Flushing the database to the file"); 
-        System.out.println(""); 
-        
-        
-        ArrayList<Datashard> bookData = Database.Read(FilePath.book);
-        ArrayList<Datashard> customerData = Database.Read(FilePath.customer);
-        for(Datashard abstractData : bookData){
-            BookData data = (BookData) abstractData; 
-            System.out.println("Book: " + data.name + " " + data.price); 
-        }
-        
-        for(Datashard abstractData : customerData){
-            CustomerData data = (CustomerData) abstractData; 
-            System.out.println("Customer: " + data.name + " " + data.points + " " + data.password);
-        }
-        
-        if(bookData.size() != 2 || customerData.size() != 2)
-            System.out.println("\033[0;31mDATA READ WRITE FAILED \033[0m");
-        else
-            System.out.println("\033[0;32mDATA READ WRITE PASSED \033[0m");
-        
-        System.out.println("");
-        System.out.println("-----------------[TESTING DATA REMOVING]------------------");
-        boolean pass = true; 
-        Database.Remove(B1); 
-        System.out.println("Removing book 1 from data list"); 
-        Database.Remove(C1); 
-        System.out.println("Removing customer 1 from data list"); 
-        
-        System.out.println("Flushing data onto file"); 
-        Database.Flush(); 
-        
-        bookData = Database.Read(FilePath.book);
-        customerData = Database.Read(FilePath.customer);
-        
-        for(Datashard abstractData : bookData){
-            BookData data = (BookData) abstractData; 
-            if(data.name.equals(B1.name)){
-                System.out.println("\033[0;31m BOOK DATA REMOVING FAILED \033[0m");
-                pass = false; 
-                break;
-            }
-        }
-       
-        for(Datashard abstractData : customerData){
-            CustomerData data = (CustomerData) abstractData; 
-            if(data.name.equals(C1.name)){
-                System.out.println("\033[0;31m CUSTOMER DATA REMOVING FAILED \033[0m");
-                pass = false;
-                break;
-            }
-        }
-        
-        for(Datashard abstractData : bookData){
-            BookData data = (BookData) abstractData; 
-            System.out.println("Book: " + data.name + " " + data.price); 
-        }
-        
-        for(Datashard abstractData : customerData){
-            CustomerData data = (CustomerData) abstractData; 
-             System.out.println("Customer: " + data.name + " " + data.points + " " + data.password);
-        }
-        
-        if(pass){
-            System.out.println("\033[0;32mDATA REMOVING PASSED \033[0m");
-        }
-        
-        System.out.println("");
-        System.out.println("-----------------[TESTING DATA OVERWRITES]----------------");
-   
-        // Testing overwrites
-        Database.Write(B1,true);
-        System.out.println("Overwriting book data with book 1");
-        Database.Write(C1,true);
-        System.out.println("Overwriting customer data with customer 1"); 
-        
-        Database.Flush(); 
-        System.out.println("Flushes all data into the file"); 
-        System.out.println(""); 
-        
-        bookData = Database.Read(FilePath.book);
-        customerData = Database.Read(FilePath.customer);
-        for(Datashard abstractData : bookData){
-            BookData data = (BookData) abstractData; 
-            System.out.println("Book: " + data.name + " " + data.price); 
-        }
-        
-        for(Datashard abstractData : customerData){
-            CustomerData data = (CustomerData) abstractData; 
-             System.out.println("Customer: " + data.name + " " + data.points + " " + data.password);
-        }
-        
-        if(bookData.size() != 1 || customerData.size() != 1)
-            System.out.println("\033[0;31mDATA OVERWRITE FAILED \033[0m");
-        else
-            System.out.println("\033[0;32mDATA OVERWRITE PASSED \033[0m");
-        
-        System.out.println("");
-        System.out.println("-----------------[TESTING DATA CLEARING]----------------");
-        
-        Database.Clear(FilePath.book);
-        System.out.println("Removing all book data"); 
-        Database.Clear(FilePath.customer);
-        System.out.println("Removing all customer data"); 
-        
-        Database.Flush(); 
-        System.out.println("Flushes all data into the file"); 
-        System.out.println("");
-        
-        bookData = Database.Read(FilePath.book);
-        customerData = Database.Read(FilePath.customer);
-        for(Datashard abstractData : bookData){
-            BookData data = (BookData) abstractData; 
-            System.out.println("Book: " + data.name + " " + data.price); 
-        }
-        
-        for(Datashard abstractData : customerData){
-            CustomerData data = (CustomerData) abstractData; 
-             System.out.println("Customer: " + data.name + " " + data.points + " " + data.password);
-        }
-       
-        if(bookData.size() != 0 || customerData.size() != 0)
-            System.out.println("\033[0;31mDATA CLEARING FAILED \033[0m");
-        else
-            System.out.println("\033[0;32mDATA CLEARING PASSED \033[0m");
-        
-    }
-    
-    
 }
