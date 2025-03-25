@@ -5,6 +5,8 @@
 package finalProject;
 
 import java.util.ArrayList;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
@@ -18,6 +20,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.control.cell.CheckBoxTableCell;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
+import javafx.scene.layout.HBox;
 
 /**
  *
@@ -146,15 +149,22 @@ public class CustomerStartGUI extends GUIMode{
             }
                 
         });
+        
+        
 
+        HBox buttonContainer = new HBox(); 
+        buttonContainer.setAlignment(Pos.CENTER_LEFT); 
+        buttonContainer.setSpacing(5);
+        buttonContainer.getChildren().addAll(logout, redeemPointsButton,buyButton,errLabel); 
 
         // Add items to GridPane
         customerPane.add(welcomeLabel, 0, 0);
         customerPane.add(table, 0, 1);
-        customerPane.add(errLabel, 0, 2);
-        customerPane.add(buyButton, 0, 3);
-        customerPane.add(redeemPointsButton, 0, 4);
-        customerPane.add(logout, 0, 5);
+        //customerPane.add(errLabel, 0, 2);
+        customerPane.add(buttonContainer, 0, 2);
+        
+        
+  
         
         // Remove padding from table itself
         table.setStyle("-fx-padding: 0; -fx-focus-color: transparent; -fx-faint-focus-color: transparent; -fx-border-color: transparent;");

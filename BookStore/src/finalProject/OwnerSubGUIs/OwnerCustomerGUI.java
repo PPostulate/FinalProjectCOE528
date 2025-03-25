@@ -12,6 +12,8 @@ import finalProject.Driver;
 import finalProject.FilePath;
 import finalProject.GUIMode;
 import finalProject.OwnerStartGUI;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -25,6 +27,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 
 /**
@@ -108,7 +111,7 @@ public class OwnerCustomerGUI extends GUIMode {
             }else if (pass.trim().length() == 0){
                 errLabel.setText("Invalid, customer password cannot be blank");
             }else{
-            errLabel.setText("Invalid, Customer username already exists");
+                errLabel.setText("Invalid, Customer username already exists");
             }
         }
         
@@ -136,6 +139,11 @@ public class OwnerCustomerGUI extends GUIMode {
     });
     
     
+    // Adds a new HBox 
+    HBox buttonContainer = new HBox(); 
+    buttonContainer.setAlignment(Pos.CENTER_LEFT);
+    buttonContainer.setSpacing(5); 
+    buttonContainer.getChildren().addAll(backButton,deleteButton,addButton,errLabel); 
     
     
     
@@ -145,11 +153,9 @@ public class OwnerCustomerGUI extends GUIMode {
     ownerCustomerPane.add(table, 0, 0);
     ownerCustomerPane.add(userField, 0, 1);
     ownerCustomerPane.add(passField, 0, 2);
-    ownerCustomerPane.add(addButton, 0, 3);
-    ownerCustomerPane.add(errLabel, 0, 4);
-    ownerCustomerPane.add(deleteButton, 0, 5);
-    ownerCustomerPane.add(backButton,0,6);    
-    
+    ownerCustomerPane.add(buttonContainer, 0, 3);
+    //ownerCustomerPane.add(errLabel, 0, 4);
+
     // Remove padding from table itself
     table.setStyle("-fx-padding: 0; -fx-focus-color: transparent; -fx-faint-focus-color: transparent; -fx-border-color: transparent;");
     table.getStyleClass().add("no-table-border");
