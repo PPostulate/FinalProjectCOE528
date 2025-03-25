@@ -4,7 +4,6 @@
  */
 package finalProject.OwnerSubGUIs;
 
-import finalProject.BookData;
 import finalProject.Database;
 import finalProject.CustomerData;
 import finalProject.Datashard;
@@ -12,12 +11,8 @@ import finalProject.Driver;
 import finalProject.FilePath;
 import finalProject.GUIMode;
 import finalProject.OwnerStartGUI;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.scene.layout.GridPane;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
