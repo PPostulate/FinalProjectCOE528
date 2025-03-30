@@ -53,10 +53,12 @@ public class CustomerCheckoutGUI extends GUIMode{
                 cData.points -= transactionCost*100;
                 transactionCost = 0;
             }
+        }else {
+            cData.points += transactionCost*10;
         }
         
-        transactionCostLabel.setText("Total Cost: " + transactionCost);
-        customerStats.setText("Points: " + cData.points + " Status: " + cData.getStatus());
+        transactionCostLabel.setText("Total Cost: " + String.format("%.2f", transactionCost));
+        customerStats.setText("Points: " + String.format("%.2f", cData.points) + " Status: " + cData.getStatus());
       
         
         

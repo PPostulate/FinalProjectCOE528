@@ -1,18 +1,4 @@
-The Forgotten Path,14.99
-Beneath the Crimson Sky,13.49
-The Last Horizon,16.99
-Echoes of the Past,11.99
-The Midnight Library,10.99
-A Tale of Two Worlds,14.49
-The Lost Kingdom,17.99
-Secrets of the Ocean,13.99
-The Eternal Flame,12.49
 The Clockwork Heart,15.99
-The Wandering Star,11.49
-The Edge of Tomorrow,16.49
-The Crystal Cavern,14.99
-The Shadow's Embrace,13.49
-The Golden Compass,12.99
 The Winter's Tale,10.49
 The Sapphire Crown,15.49
 The Emerald Enigma,14.99
@@ -87,8 +73,5 @@ The Basilisk's Gaze,15.49
 The Medusa's Revenge,12.99
 The Cyclops's Eye,11.49
 The Titan's Fall,9.99
-The Olympian's Legacy,14.49
-The Hero's Journey,13.99
-The Villain's Gambit,15.99
 The Warrior's Path,12.49
 The Legend's End,14.99
