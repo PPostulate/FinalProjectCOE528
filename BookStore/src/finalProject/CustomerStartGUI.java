@@ -41,7 +41,7 @@ public class CustomerStartGUI extends GUIMode{
         customerPane.setVgap(10);  // Vertical gap
         
         Label welcomeLabel = new Label();
-        welcomeLabel.setText("Welcome " + c.name + ". You have " + c.points + " points. Your status is "+ c.getStatus());
+        welcomeLabel.setText("Welcome " + c.name + ". You have " + String.format("%.2f", c.points) + " points. Your status is "+ c.getStatus());
         
         // Create TableView and columns
         TableView <BookData> table = new TableView<>(); 
